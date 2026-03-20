@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowPath OS — AI Commute Intelligence for Indian Enterprises</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --navy: #0A0F1E;
+      --navy-light: #111827;
+      --teal: #00D4AA;
+      --amber: #F59E0B;
+      --teal-dim: rgba(0,212,170,0.15);
+      --amber-dim: rgba(245,158,11,0.15);
+    }
+    * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+    body { background: var(--navy); color: #E2E8F0; margin: 0; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 50;
+      background: rgba(10,15,30,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,212,170,0.15);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+    .logo { font-size: 1.25rem; font-weight: 800; color: var(--teal); letter-spacing: -0.5px; }
+    .logo span { color: #E2E8F0; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { color: #94A3B8; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal); color: var(--navy); padding: 0.5rem 1.25rem;
+      border-radius: 6px; font-weight: 700; font-size: 0.875rem;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      background: linear-gradient(135deg, #0A0F1E 0%, #0D1829 50%, #0A1A14 100%);
+      position: relative; overflow: hidden; padding-top: 80px;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,212,170,0.08) 0%, transparent 70%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.04;
+      background-image: linear-gradient(rgba(0,212,170,0.5) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,212,170,0.5) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; padding: 5rem 1.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center; position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--teal-dim); border: 1px solid rgba(0,212,170,0.3);
+      color: var(--teal); padding: 0.35rem 0.875rem; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900;
+      line-height: 1.05; letter-spacing: -1.5px; color: #F1F5F9;
+      margin: 0 0 1.25rem;
+    }
+    .hero h1 .accent { color: var(--teal); }
+    .hero-sub {
+      font-size: 1.1rem; color: #94A3B8; line-height: 1.7;
+      margin-bottom: 2.5rem; max-width: 480px;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--teal); color: var(--navy); padding: 0.875rem 2rem;
+      border-radius: 8px; font-weight: 700; font-size: 1rem;
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 20px rgba(0,212,170,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 30px rgba(0,212,170,0.4); }
+    .btn-secondary {
+      border: 1.5px solid rgba(0,212,170,0.4); color: var(--teal);
+      padding: 0.875rem 2rem; border-radius: 8px; font-weight: 600;
+      font-size: 1rem; text-decoration: none; transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: var(--teal-dim); }
+
+    /* METRICS CARD */
+    .metrics-card {
+      background: rgba(17,24,39,0.8); border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 16px; padding: 2rem; backdrop-filter: blur(10px);
+    }
+    .metrics-card h3 { font-size: 0.75rem; font-weight: 600; color: var(--teal); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 1.5rem; }
+    .metric-row { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .metric-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .metric-num { font-size: 2.5rem; font-weight: 900; color: var(--teal); letter-spacing: -1px; }
+    .metric-num.amber { color: var(--amber); }
+    .metric-suffix { font-size: 1rem; font-weight: 600; color: var(--teal); }
+    .metric-suffix.amber { color: var(--amber); }
+    .metric-label { font-size: 0.875rem; color: #64748B; margin-left: 0.25rem; }
+    .pilot-note {
+      margin-top: 1.5rem; padding: 0.875rem; border-radius: 8px;
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);
+      font-size: 0.8rem; color: #94A3B8; line-height: 1.5;
+    }
+    .pilot-note strong { color: var(--amber); }
+
+    /* SECTIONS */
+    section { padding: 6rem 1.5rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.75rem); font-weight: 800;
+      letter-spacing: -1px; color: #F1F5F9; margin: 0 0 1rem;
+    }
+    .section-sub { font-size: 1.05rem; color: #64748B; max-width: 600px; line-height: 1.7; }
+
+    /* PROBLEM */
+    #problem { background: linear-gradient(180deg, var(--navy) 0%, #0C1420 100%); }
+    .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .problem-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 1.75rem; transition: border-color 0.3s;
+    }
+    .problem-card:hover { border-color: rgba(0,212,170,0.3); }
+    .problem-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .problem-card h4 { font-size: 1.05rem; font-weight: 700; color: #E2E8F0; margin: 0 0 0.5rem; }
+    .problem-card p { font-size: 0.9rem; color: #64748B; line-height: 1.6; margin: 0; }
+    .problem-stat { font-size: 1.5rem; font-weight: 800; color: var(--amber); margin-top: 0.75rem; }
+
+    /* SOLUTION */
+    #solution { background: #0C1420; }
+    .solution-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+    .feature-list { list-style: none; padding: 0; margin: 0; }
+    .feature-item { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }
+    .feature-check {
+      width: 24px; height: 24px; background: var(--teal-dim); border: 1px solid rgba(0,212,170,0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .feature-check::after { content: '✓'; color: var(--teal); font-size: 0.75rem; font-weight: 700; }
+    .feature-text h5 { font-size: 0.95rem; font-weight: 600; color: #E2E8F0; margin: 0 0 0.25rem; }
+    .feature-text p { font-size: 0.85rem; color: #64748B; margin: 0; line-height: 1.5; }
+    .product-mock {
+      background: rgba(17,24,39,0.9); border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 16px; padding: 1.5rem; position: relative;
+    }
+    .mock-header {
+      display: flex; gap: 0.5rem; margin-bottom: 1.25rem;
+    }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-bar {
+      height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); margin-bottom: 0.75rem;
+    }
+    .mock-bar.teal { background: linear-gradient(90deg, var(--teal) 0%, rgba(0,212,170,0.2) 100%); }
+    .mock-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem;
+      font-size: 0.75rem; color: #94A3B8;
+    }
+    .mock-card .mock-route {
+      display: flex; align-items: center; gap: 0.5rem; color: var(--teal);
+      font-weight: 600; font-size: 0.8rem; margin-bottom: 0.25rem;
+    }
+    .mode-pill {
+      display: inline-block; background: rgba(0,212,170,0.15); color: var(--teal);
+      border-radius: 100px; padding: 0.125rem 0.5rem; font-size: 0.65rem; font-weight: 600;
+      margin-right: 0.25rem;
+    }
+
+    /* HOW IT WORKS */
+    #how { background: var(--navy); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; position: relative; }
+    .steps::before {
+      content: ''; position: absolute; top: 28px; left: calc(12.5% + 14px); right: calc(12.5% + 14px);
+      height: 2px; background: linear-gradient(90deg, var(--teal) 0%, rgba(0,212,170,0.2) 100%);
+    }
+    .step { text-align: center; position: relative; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--teal-dim); border: 2px solid var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: var(--teal);
+      margin: 0 auto 1rem; position: relative; z-index: 1;
+    }
+    .step h5 { font-size: 0.95rem; font-weight: 700; color: #E2E8F0; margin: 0 0 0.4rem; }
+    .step p { font-size: 0.82rem; color: #64748B; line-height: 1.5; margin: 0; }
+
+    /* TRACTION */
+    #traction { background: linear-gradient(135deg, #0C1420 0%, #091018 100%); }
+    .traction-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .traction-card {
+      background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 12px; padding: 1.5rem; text-align: center;
+    }
+    .traction-num { font-size: 2.25rem; font-weight: 900; color: var(--teal); letter-spacing: -1px; }
+    .traction-num.amber { color: var(--amber); }
+    .traction-label { font-size: 0.825rem; color: #64748B; margin-top: 0.375rem; }
+    .quote-box {
+      margin-top: 3rem; background: rgba(245,158,11,0.06);
+      border-left: 3px solid var(--amber); padding: 1.5rem 2rem;
+      border-radius: 0 12px 12px 0;
+    }
+    .quote-text { font-size: 1.05rem; color: #CBD5E1; line-height: 1.7; font-style: italic; }
+    .quote-attr { font-size: 0.85rem; color: #64748B; margin-top: 0.75rem; }
+
+    /* MARKET */
+    #market { background: var(--navy); }
+    .tam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .tam-card {
+      border-radius: 12px; padding: 1.75rem; text-align: center;
+    }
+    .tam-card:nth-child(1) { background: rgba(0,212,170,0.06); border: 1px solid rgba(0,212,170,0.2); }
+    .tam-card:nth-child(2) { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); }
+    .tam-card:nth-child(3) { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); }
+    .tam-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .tam-card:nth-child(1) .tam-label { color: var(--teal); }
+    .tam-card:nth-child(2) .tam-label { color: var(--amber); }
+    .tam-card:nth-child(3) .tam-label { color: #A78BFA; }
+    .tam-num { font-size: 2.5rem; font-weight: 900; color: #F1F5F9; letter-spacing: -1px; }
+    .tam-desc { font-size: 0.82rem; color: #64748B; margin-top: 0.375rem; line-height: 1.5; }
+
+    /* BUSINESS MODEL */
+    #model { background: #0C1420; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 700px; margin: 3rem auto 0; }
+    .price-card {
+      border-radius: 16px; padding: 2rem;
+    }
+    .price-card.free { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); }
+    .price-card.enterprise { background: rgba(0,212,170,0.06); border: 2px solid var(--teal); }
+    .price-tier { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .price-card.free .price-tier { color: #64748B; }
+    .price-card.enterprise .price-tier { color: var(--teal); }
+    .price-amount { font-size: 2.25rem; font-weight: 900; color: #F1F5F9; margin-bottom: 0.25rem; }
+    .price-sub { font-size: 0.82rem; color: #64748B; margin-bottom: 1.5rem; }
+    .price-features { list-style: none; padding: 0; margin: 0; }
+    .price-features li { font-size: 0.875rem; color: #94A3B8; padding: 0.375rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features li::before { content: '→ '; color: var(--teal); font-weight: 700; }
+    .revenue-note {
+      text-align: center; margin-top: 2rem;
+      font-size: 0.9rem; color: #64748B;
+    }
+    .revenue-note strong { color: var(--amber); }
+
+    /* TEAM */
+    #team { background: var(--navy); }
+    .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 800px; margin: 3rem auto 0; }
+    .team-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 1.75rem; transition: border-color 0.3s;
+    }
+    .team-card:hover { border-color: rgba(0,212,170,0.3); }
+    .team-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), #0097A7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .team-name { font-size: 1.05rem; font-weight: 700; color: #E2E8F0; margin: 0 0 0.25rem; }
+    .team-role { font-size: 0.8rem; color: var(--teal); font-weight: 600; margin: 0 0 0.75rem; }
+    .team-bio { font-size: 0.85rem; color: #64748B; line-height: 1.6; margin: 0; }
+    .team-tag {
+      display: inline-block; background: rgba(255,255,255,0.05); color: #94A3B8;
+      border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.72rem;
+      font-weight: 500; margin: 0.75rem 0.25rem 0 0;
+    }
+
+    /* CTA */
+    #cta {
+      background: linear-gradient(135deg, #0A1A14 0%, #091018 100%);
+      text-align: center;
+    }
+    #cta .section-title { color: #F1F5F9; }
+    .cta-sub { font-size: 1.1rem; color: #94A3B8; margin: 1rem auto 2.5rem; max-width: 500px; line-height: 1.7; }
+    .cta-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .raise-badge {
+      display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
+      color: var(--amber); padding: 0.625rem 1.5rem; border-radius: 100px;
+      font-size: 0.875rem; font-weight: 600; margin-top: 2.5rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #060A13; border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem 1.5rem; text-align: center;
+    }
+    footer p { font-size: 0.8rem; color: #334155; margin: 0; }
+    footer .logo { display: inline-block; margin-bottom: 0.5rem; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,212,170,0.2), transparent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .problem-grid, .steps, .traction-grid, .tam-grid { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 100%; }
+      .team-grid { grid-template-columns: 1fr; max-width: 100%; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Flow<span>Path</span> <span style="color:#64748B;font-weight:400;font-size:0.9rem">OS</span></div>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#traction">Traction</a></li>
+      <li><a href="#market">Market</a></li>
+      <li><a href="#team">Team</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Schedule Demo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🇮🇳 Seed Stage · Bangalore, India</div>
+      <h1>The <span class="accent">AI Mobility Brain</span> for Indian Enterprises</h1>
+      <p class="hero-sub">
+        FlowPath OS turns your employees' chaotic commutes into organized, optimized, auditable transport data — cutting commute time, reimbursement leakage, and ESG compliance burden simultaneously.
+      </p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">Schedule a Demo</a>
+        <a href="#solution" class="btn-secondary">See How It Works</a>
+      </div>
+    </div>
+    <div class="metrics-card">
+      <h3>Live Pilot Results — Whitefield, Bangalore</h3>
+      <div class="metric-row">
+        <span class="metric-num" id="m1">0</span><span class="metric-suffix">%</span>
+        <span class="metric-label">avg. commute time reduction</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-num amber" id="m2">0</span><span class="metric-suffix amber">%</span>
+        <span class="metric-label">verified reimbursement savings</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-num" id="m3">0</span><span class="metric-suffix">+</span>
+        <span class="metric-label">employees on platform</span>
+      </div>
+      <div class="pilot-note">
+        <strong>2 enterprise pilots</strong> · Tier-1 IT services companies · Whitefield–MG Road corridor · 60 days live
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="section-tag">The Problem</div>
+    <h2 class="section-title">Your company spends ₹40–60L a year on employee transport — and can't account for any of it.</h2>
+    <p class="section-sub">Indian enterprises manage transport as a black box. The result: wasted spend, failed ESG audits, and 1,200 frustrated commutes every day.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">🕐</div>
+        <h4>Commute Time Waste</h4>
+        <p>Bangalore and Mumbai professionals lose 45–90 minutes daily to fragmented, unpredictable commutes with no unified intelligent routing across metro, bus, auto, and cab.</p>
+        <div class="problem-stat">90 min/day lost</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">💸</div>
+        <h4>Reimbursement Leakage</h4>
+        <p>Transport reimbursement claims can't be verified, optimized, or audited. Enterprises overspend by 25–40% on unverifiable claims with no data trail.</p>
+        <div class="problem-stat">₹40–60L/yr leakage</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🌍</div>
+        <h4>ESG Compliance Gap</h4>
+        <p>Scope 3 employee commute emissions are mandatory for BRSR compliance but impossible to report without transport data infrastructure. Most companies are flying blind on their audit.</p>
+        <div class="problem-stat">Scope 3 untracked</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="section-inner">
+    <div class="section-tag">The Solution</div>
+    <h2 class="section-title">FlowPath OS: one AI layer that solves all three.</h2>
+    <div class="solution-grid">
+      <ul class="feature-list">
+        <li class="feature-item">
+          <span class="feature-check"></span>
+          <div class="feature-text">
+            <h5>Multimodal AI Routing Engine</h5>
+            <p>Learns each employee's commute DNA — price sensitivity, walking tolerance, departure flexibility — and dispatches optimal routes across metro, bus, auto, and cab in real time.</p>
+          </div>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check"></span>
+          <div class="feature-text">
+            <h5>Verified Reimbursement Layer</h5>
+            <p>Every trip is logged, time-stamped, and cross-referenced with actuals. Finance gets a clean, auditable transport ledger. No more unverifiable claims.</p>
+          </div>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check"></span>
+          <div class="feature-text">
+            <h5>Automated Scope 3 ESG Reports</h5>
+            <p>Auto-generates BRSR-compliant Scope 3 commute emissions reports from live trip data. One click from audit-ready PDF.</p>
+          </div>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check"></span>
+          <div class="feature-text">
+            <h5>Crowdsourced Transit Intelligence</h5>
+            <p>Employees report real-time delays (Waze-style) — bootstrapping a proprietary transit graph that improves with every commuter on the platform.</p>
+          </div>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check"></span>
+          <div class="feature-text">
+            <h5>HRMS Integration</h5>
+            <p>Connects with SAP SuccessFactors, Darwinbox, and Workday. Transport data flows directly into payroll and expense management systems.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="product-mock">
+        <div class="mock-header">
+          <div class="mock-dot" style="background:#EF4444"></div>
+          <div class="mock-dot" style="background:#F59E0B"></div>
+          <div class="mock-dot" style="background:#22C55E"></div>
+          <span style="font-size:0.7rem;color:#475569;margin-left:0.5rem">FlowPath OS — Employee Dashboard</span>
+        </div>
+        <div style="font-size:0.7rem;color:#475569;margin-bottom:0.75rem">Good morning, Priya 👋  Your commute is ready.</div>
+        <div class="mock-card">
+          <div class="mock-route">🚇 Optimal Route · 34 min <span style="color:#22C55E;font-size:0.7rem;margin-left:0.5rem">▼ 22 min saved</span></div>
+          <span class="mode-pill">Metro</span> <span style="color:#475569">Whitefield → Indiranagar</span>
+          <span class="mode-pill">Walk</span> <span style="color:#475569">500m to office</span>
+          <div style="margin-top:0.5rem;font-size:0.7rem;color:#475569">₹52 total · 1.2 kg CO₂ saved vs. cab</div>
+        </div>
+        <div class="mock-card">
+          <div style="font-size:0.7rem;color:var(--amber);font-weight:600;margin-bottom:0.25rem">⚡ Real-time alert</div>
+          <div style="font-size:0.7rem;color:#64748B">Purple Line delay reported. Switching to BMTC + e-Rickshaw combo. ETA unchanged.</div>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="mock-bar teal" style="width:70%"></div>
+          <div class="mock-bar" style="width:90%"></div>
+          <div class="mock-bar" style="width:55%"></div>
+        </div>
+        <div style="font-size:0.65rem;color:#334155;margin-top:0.75rem">Fleet Dashboard · 847 employees tracked today · ₹1.2L in verified claims</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Four steps to intelligent commute infrastructure.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h5>Employee Onboards</h5>
+        <p>Downloads the free FlowPath app, sets home + office location, declares commute preferences.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h5>AI Learns & Routes</h5>
+        <p>Our ML model learns the commute DNA. Daily optimal routes dispatched across all transport modes.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h5>Data Flows to Enterprise</h5>
+        <p>Every trip logs to the enterprise dashboard. Finance gets verified reimbursement data. HR sees commute trends.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h5>Reports Auto-Generated</h5>
+        <p>Monthly Scope 3 ESG report and transport cost analysis delivered to inbox. Audit-ready, always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRACTION -->
+<section id="traction">
+  <div class="section-inner">
+    <div class="section-tag">Traction</div>
+    <h2 class="section-title">60 days live. Numbers that speak for themselves.</h2>
+    <div class="traction-grid">
+      <div class="traction-card">
+        <div class="traction-num">1,200</div>
+        <div class="traction-label">employees on platform across 2 enterprise pilots</div>
+      </div>
+      <div class="traction-card">
+        <div class="traction-num">20<span style="font-size:1.25rem">%</span></div>
+        <div class="traction-label">avg. commute time reduction per employee</div>
+      </div>
+      <div class="traction-card">
+        <div class="traction-num amber">35<span style="font-size:1.25rem">%</span></div>
+        <div class="traction-label">verified reimbursement savings (auditable)</div>
+      </div>
+      <div class="traction-card">
+        <div class="traction-num">2</div>
+        <div class="traction-label">Tier-1 IT services companies piloting (LOIs signed for scale)</div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-text">"We've been trying to report Scope 3 transport emissions for our BRSR filing for two years. FlowPath gave us clean, audit-ready data in 60 days. We didn't realize how much of our transport budget was just... unaccounted for."</div>
+      <div class="quote-attr">— Head of Operations, Tier-1 IT Services Company, Bangalore (pilot participant)</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MARKET SIZE -->
+<section id="market">
+  <div class="section-inner">
+    <div class="section-tag">Market Opportunity</div>
+    <h2 class="section-title">A massive, underserved market at the intersection of SaaS, mobility, and ESG.</h2>
+    <div class="tam-grid">
+      <div class="tam-card">
+        <div class="tam-label">TAM — Total Addressable Market</div>
+        <div class="tam-num">$4.2B</div>
+        <div class="tam-desc">Enterprise commute + transport management market across India, SEA, and Middle East over 5 years. Driven by BRSR mandates, hybrid work, and rising commute costs.</div>
+      </div>
+      <div class="tam-card">
+        <div class="tam-label">SAM — Serviceable Addressable Market</div>
+        <div class="tam-num">$680M</div>
+        <div class="tam-desc">500+ employee companies in Bangalore, Mumbai, Hyderabad, and Pune — ~8,400 enterprises, each spending ₹40–60L/year on employee transport.</div>
+      </div>
+      <div class="tam-card">
+        <div class="tam-label">SOM — Serviceable Obtainable (Yr 3)</div>
+        <div class="tam-num">$24M</div>
+        <div class="tam-desc">Target 160 enterprise clients (Bangalore + Mumbai) at ₹150/employee/mo average, 200 employees per account. Realistic within 36 months post-seed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BUSINESS MODEL -->
+<section id="model">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-tag">Business Model</div>
+    <h2 class="section-title">B2B-first. Consumer as a flywheel.</h2>
+    <p class="section-sub" style="margin: 0 auto 0">The free consumer app seeds the data graph that makes the enterprise product more accurate — and more defensible.</p>
+    <div class="pricing-grid">
+      <div class="price-card free">
+        <div class="price-tier">Consumer App</div>
+        <div class="price-amount">Free</div>
+        <div class="price-sub">Individual commuters · Data flywheel</div>
+        <ul class="price-features">
+          <li>Multimodal route optimization</li>
+          <li>Real-time transit alerts</li>
+          <li>Commute savings tracker</li>
+          <li>Carbon footprint dashboard</li>
+          <li>Crowdsource transit reports</li>
+        </ul>
+      </div>
+      <div class="price-card enterprise">
+        <div class="price-tier">✦ Enterprise OS</div>
+        <div class="price-amount">₹150</div>
+        <div class="price-sub">per employee / month · Minimum 100 seats</div>
+        <ul class="price-features">
+          <li>All Consumer features</li>
+          <li>Enterprise fleet dashboard</li>
+          <li>Verified reimbursement ledger</li>
+          <li>Automated Scope 3 ESG reports</li>
+          <li>HRMS integration (SAP, Darwinbox)</li>
+          <li>Dedicated CSM + SLA</li>
+        </ul>
+      </div>
+    </div>
+    <div class="revenue-note">
+      Additional revenue: <strong>2–4% take-rate on in-app ticketing</strong> via ONDC mobility integration
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-tag">The Team</div>
+    <h2 class="section-title">Built by people who've lived the problem.</h2>
+    <div class="team-grid">
+      <div class="team-card" style="text-align:left">
+        <div class="team-avatar">RM</div>
+        <div class="team-name">Roshan Mehta</div>
+        <div class="team-role">Co-Founder & CEO</div>
+        <p class="team-bio">Former analytics consultant at Fractal Analytics. PGP, ISB Hyderabad. Spent 4 years building data products for BFSI and logistics companies. Commuted 2 hours daily for 3 years in Bangalore — the personal motivation behind FlowPath.</p>
+        <div>
+          <span class="team-tag">Fractal Analytics</span>
+          <span class="team-tag">ISB PGP</span>
+          <span class="team-tag">Product Strategy</span>
+        </div>
+      </div>
+      <div class="team-card" style="text-align:left">
+        <div class="team-avatar" style="background: linear-gradient(135deg, var(--amber), #D97706);">AK</div>
+        <div class="team-name">Ananya Krishnan</div>
+        <div class="team-role">Co-Founder & CTO</div>
+        <p class="team-bio">Former SDE-2 at Ola Maps team (3 years). Built real-time routing algorithms serving 5M+ requests/day. IIT Bombay CS, 2019. Deep expertise in geospatial ML, transit graph modeling, and mobile-first product engineering.</p>
+        <div>
+          <span class="team-tag">Ola Maps</span>
+          <span class="team-tag">IIT Bombay</span>
+          <span class="team-tag">Geospatial ML</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-inner">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title">Ready to make employee commutes a competitive advantage?</h2>
+    <p class="cta-sub">We're talking to 10 enterprise clients and 5 Seed investors this quarter. If your company has 300+ employees in Bangalore or Mumbai — or if you're building the future of Indian enterprise SaaS — let's talk.</p>
+    <div class="cta-btns">
+      <a href="mailto:roshan@flowpathos.in?subject=FlowPath OS - Demo Request" class="btn-primary">Schedule a 20-Min Demo</a>
+      <a href="mailto:roshan@flowpathos.in?subject=FlowPath OS - Investor Deck Request" class="btn-secondary">Download Investor Deck</a>
+    </div>
+    <div>
+      <span class="raise-badge">🔒 Currently Raising: ₹3 Crore Seed Round</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Flow<span>Path</span> OS</div>
+  <p>© 2026 FlowPath Technologies Pvt. Ltd. · Bangalore, India · roshan@flowpathos.in</p>
+  <p style="margin-top:0.5rem">Making every commute count — for employees, enterprises, and the planet.</p>
+</footer>
+
+<script>
+  // Animated counter
+  function animateCounter(id, target, duration, suffix) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target; clearInterval(timer); }
+      else { el.textContent = Math.floor(start); }
+    }, 16);
+  }
+
+  // Intersection observer for hero metrics
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => animateCounter('m1', 20, 1200), 300);
+        setTimeout(() => animateCounter('m2', 35, 1200), 500);
+        setTimeout(() => animateCounter('m3', 1200, 1500), 700);
+        heroObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const metricsCard = document.querySelector('.metrics-card');
+  if (metricsCard) heroObserver.observe(metricsCard);
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
